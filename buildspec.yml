@@ -2,11 +2,6 @@ version: 0.2
 
 
 phases:
-install:
-    commands:
-      - echo "Install phase ..."
-    runtime-versions:
-      java: corretto11
   pre_build:
     commands:
       - mvn clean install
