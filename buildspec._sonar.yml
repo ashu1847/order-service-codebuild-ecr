@@ -19,7 +19,7 @@ phases:
       - unzip ./sonar-scanner-cli-3.3.0.1492-linux.zip
       - export PATH=$PATH:/sonar-scanner-3.3.0.1492-linux/bin/
       - echo "Running SonarQube analysis..."
-      - mvn sonar:sonar -Dsonar.login=$SONAR_LOGIN -Dsonar.host.url=$SONAR_HOST -Dsonar.projectKey=order-service -Dsonar.projectname=order-service -Dsonar.scm.disabled=true -Dsonar.projectVersion=1.0 -Dsonar.java.binaries=**/target/classes  
+      - sonar:sonar -Dsonar.login=$SONAR_LOGIN -Dsonar.host.url=$SONAR_HOST -Dsonar.sources=. -Dsonar.projectKey=order-service -Dsonar.projectname=order-service -Dsonar.scm.disabled=true  
   build:
     commands:
       - echo "Build phase ..."
