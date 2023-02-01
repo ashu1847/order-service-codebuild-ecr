@@ -12,7 +12,7 @@ stages {
          stage('SonarQube analysis') {
         steps{
         withSonarQubeEnv('sonar-9') { 
-        sh "mvn sonar:sonar sonar.sources=. sonar.projectKey=Order_Project  sonar.scm.disabled=true"
+        sh "mvn sonar:sonar  sonar.projectKey=Order_Project  sonar.scm.disabled=true"
     }
         }
          }
