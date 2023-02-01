@@ -1,0 +1,48 @@
+pipeline{
+agent any
+environment {
+        PATH = "$PATH:/opt/apache-maven-3.8.3/bin"
+    }
+stages {
+         stage('Maven Build'){
+            steps{
+                sh 'mvn clean package'
+            }
+         }
+         stage('SonarQube analysis') {
+        steps{
+        withSonarQubeEnv('sonar-9') { 
+        sh "mvn sonar:sonar sonar.sources=.  sonar.scm.disabled=true"
+    }
+        }
+         }
+    stage('Docker Build and Tag and push into ECR') {
+           steps {
+             
+	  sh '''
+	     set +x
+             sudo docker build -t web-repo . 
+	     sudo $(sudo aws ecr get-login --no-include-email --region us-west-1)
+	     sudo docker tag web-repo:latest 431167860687.dkr.ecr.us-west-1.amazonaws.com/web-repo:latest-new
+             sudo docker push 431167860687.dkr.ecr.us-west-1.amazonaws.com/web-repo:latest-new
+             sudo docker rmi -f 431167860687.dkr.ecr.us-west-1.amazonaws.com/web-repo:latest-new
+	     sudo docker rmi -f web-repo
+               ''' 
+                
+             
+          }
+        }
+    stage('Services Deployrment on ECS fargate ') {      
+      steps {
+
+         input message: "Do you want to proceed Deployrment on ECS fargate ?"   
+          sh '''
+             sh ./deploy.sh
+		      '''
+      }
+
+
+}
+}
+
+}
