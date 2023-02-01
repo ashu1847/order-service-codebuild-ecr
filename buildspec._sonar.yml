@@ -12,7 +12,6 @@ phases:
   pre_build:
     commands:
       - echo "Pre build phase ..."
-      - yum update -y
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
       - echo "Current path is >>>"
       - yum install unzip -y
